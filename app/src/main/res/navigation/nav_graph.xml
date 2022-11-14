@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/diaryToDoListFragment">
+
+    <fragment
+        android:id="@+id/diaryToDoListFragment"
+        android:name="com.example.diary.screens.main.diary_todo_list.DiaryToDoListFragment"
+        android:label="fragment_diary_todo_list"
+        tools:layout="@layout/fragment_diary_todo_list" >
+        <action
+            android:id="@+id/action_diaryToDoListFragment_to_businessFragment"
+            app:destination="@id/businessFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/businessFragment"
+        android:name="com.example.diary.screens.main.business.BusinessFragment"
+        android:label="fragment_business"
+        tools:layout="@layout/fragment_business" />
+</navigation>

@@ -7,27 +7,53 @@
     tools:context=".screens.main.business.BusinessFragment"
     android:background="@color/background">
 
-    <TextView
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/businessName"
-        android:text="@string/business_name"
-        app:layout_constraintStart_toStartOf="parent"
+        style="@style/MyCustomOutlined"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        style="@style/tooltipTextView" />
+        app:layout_constraintBottom_toTopOf="@+id/businessDescription"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintVertical_bias="0.1">
 
-    <TextView
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/businessNameTextEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_large"
+            android:textColor="@color/white"
+            android:hint="@string/business_name" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/businessDescription"
-        android:text="@string/business_description"
-        app:layout_constraintStart_toStartOf="parent"
+        style="@style/MyCustomOutlined"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/businessName"
-        style="@style/tooltipTextView" />
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/businessDescriptionTextEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:hint="@string/business_description" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/buttonDelete"
         style="@style/NegativeButtonStyle"
         android:text="@string/delete_button_text"
+        android:layout_marginTop="40dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonChange"
-        app:layout_constraintTop_toBottomOf="@+id/businessDescription" />
+        app:layout_constraintTop_toBottomOf="@+id/businessDescription"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.9"/>
 
     <Button
         android:id="@+id/buttonChange"
@@ -35,16 +61,18 @@
         android:text="@string/change_button_text"
         app:layout_constraintStart_toEndOf="@+id/buttonDelete"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/businessDescription" />
+        app:layout_constraintBottom_toBottomOf="@+id/buttonDelete"
+        app:layout_constraintTop_toTopOf="@+id/buttonDelete" />
 
     <Button
         android:id="@+id/buttonSave"
         style="@style/PositiveButtonStyle"
         android:text="@string/save_button_text"
-        android:layout_marginTop="40dp"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/businessDescription" />
+        app:layout_constraintBottom_toBottomOf="@+id/buttonDelete"
+        app:layout_constraintTop_toTopOf="@+id/buttonDelete" />
 
     <Button
         android:id="@+id/buttonBack"
@@ -54,7 +82,6 @@
         android:text="Открыть новый фрагмент"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

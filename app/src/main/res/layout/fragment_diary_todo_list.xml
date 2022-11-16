@@ -12,10 +12,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Открыть новый фрагмент"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ListView
+        android:id="@+id/todo_ListView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="20dp"
+        android:divider="@null"
+        android:dividerHeight="8dp"
+        android:scrollbarStyle="insideInset"
+        android:scrollbarThumbVertical="@color/orange"
+        app:layout_constraintTop_toBottomOf="@id/buttonOpen"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <include layout="@layout/bottom_menu"
         android:layout_height="wrap_content"

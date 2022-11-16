@@ -13,4 +13,6 @@ interface IBusinessesRepository {
 
     fun deleteBusiness(id: Long)
 
+    fun deleteAll()
+
 }

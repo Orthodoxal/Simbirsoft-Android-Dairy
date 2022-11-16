@@ -44,6 +44,50 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+        android:id="@+id/dateStartTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="@dimen/text_large"
+        android:textColor="@color/opal"
+        android:text="@string/business_name"
+        app:layout_constraintStart_toStartOf="@id/businessDescription"
+        app:layout_constraintTop_toBottomOf="@id/businessDescription"/>
+
+    <TextView
+        android:id="@+id/dateFinishTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="@dimen/text_large"
+        android:textColor="@color/opal"
+        android:text="@string/business_name"
+        app:layout_constraintStart_toStartOf="@id/businessDescription"
+        app:layout_constraintTop_toBottomOf="@id/dateStartTextView"/>
+
+    <TextView
+        android:id="@+id/timeStartTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="@dimen/text_large"
+        android:textColor="@color/opal"
+        android:text="@string/business_name"
+        app:layout_constraintEnd_toEndOf="@id/businessDescription"
+        app:layout_constraintTop_toBottomOf="@id/businessDescription"/>
+
+    <TextView
+        android:id="@+id/timeFinishTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="@dimen/text_large"
+        android:textColor="@color/opal"
+        android:text="@string/business_name"
+        app:layout_constraintEnd_toEndOf="@id/businessDescription"
+        app:layout_constraintTop_toBottomOf="@id/timeStartTextView"/>
+
     <Button
         android:id="@+id/buttonDelete"
         style="@style/NegativeButtonStyle"

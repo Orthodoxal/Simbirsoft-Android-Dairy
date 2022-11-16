@@ -18,4 +18,7 @@ interface BusinessesDao {
     @Query("DELETE FROM businesses WHERE id = :id")
     fun deleteBusiness(id: Long)
 
+    @Query("DELETE FROM businesses")
+    fun deleteAll()
+
 }

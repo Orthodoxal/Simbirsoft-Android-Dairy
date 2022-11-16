@@ -18,6 +18,12 @@ class DiaryToDoListFragment : BaseFragment(R.layout.fragment_diary_todo_list) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentDiaryTodoListBinding.bind(view)
 
+        //viewModel.deleteAllBusinesses()
+
+        val businessesList = viewModel.getAllBusinesses()
+        val adapter = context?.let { BusinessesAdapter(it, businessesList) }
+        binding.todoListView.adapter = adapter
+
         binding.buttonOpen.setOnClickListener {
             val direction = DiaryToDoListFragmentDirections.actionDiaryToDoListFragmentToBusinessFragment()
             findNavController().navigate(direction)

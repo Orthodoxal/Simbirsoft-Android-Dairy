@@ -20,4 +20,6 @@ class RoomBusinessesRepository(
 
     override fun deleteBusiness(id: Long) = businessesDao.deleteBusiness(id)
 
+    override fun deleteAll() = businessesDao.deleteAll()
+
 }

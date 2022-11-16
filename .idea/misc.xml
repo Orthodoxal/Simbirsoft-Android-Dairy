@@ -4,10 +4,13 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.3885" />
+        <entry key="app/src/main/res/drawable-v24/round_background.xml" value="0.389" />
         <entry key="app/src/main/res/drawable/ic_create_circle_button.xml" value="0.3885" />
+        <entry key="app/src/main/res/drawable/round_background.xml" value="0.388" />
         <entry key="app/src/main/res/drawable/top_round_background.xml" value="0.3875" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.675" />
         <entry key="app/src/main/res/layout/bottom_menu.xml" value="0.75" />
+        <entry key="app/src/main/res/layout/business_view.xml" value="0.38385416666666666" />
         <entry key="app/src/main/res/layout/fragment_business.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_create_or_change_business.xml" value="0.38333333333333336" />
         <entry key="app/src/main/res/layout/fragment_diary_list.xml" value="0.6739583333333333" />

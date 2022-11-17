@@ -12,13 +12,18 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class BusinessesAdapter(context: Context, private val businessList: List<Business>) :
+class BusinessesAdapter(
+    context: Context,
+    private val businessList: List<Business>,
+    private val onClickAction: (Business) -> Unit
+) :
     ArrayAdapter<Business>(context, R.layout.business_view, businessList) {
     private val simpleTimeFormat = SimpleDateFormat("HH:mm", Locale.ENGLISH)
         .apply { timeZone = TimeZone.getTimeZone("GMT") }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.business_view, parent, false)
+        val view = convertView ?: LayoutInflater.from(context)
+            .inflate(R.layout.business_view, parent, false)
 
         val name = view.findViewById<TextView>(R.id.name)
         val description = view.findViewById<TextView>(R.id.time)
@@ -28,6 +33,8 @@ class BusinessesAdapter(context: Context, private val businessList: List<Busines
 
         name.text = businessList[position].name
         description.text = "$timeStart - $timeFinish"
+
+        view.setOnClickListener { onClickAction(businessList[position]) }
 
         return view
     }

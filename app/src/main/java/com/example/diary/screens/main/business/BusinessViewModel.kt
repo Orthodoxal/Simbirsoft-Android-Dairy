@@ -1,6 +1,5 @@
 package com.example.diary.screens.main.business
 
-import com.example.diary.R
 import com.example.diary.app.IncorrectDateOrTime
 import com.example.diary.app.Singletons
 import com.example.diary.model.businesses.entities.Business
@@ -27,8 +26,13 @@ class BusinessViewModel : BaseViewModel() {
         }
     }
 
-    fun updateBusiness(business: Business) =
-        businessesRepository.updateBusiness(business)
+    fun updateBusiness(business: Business) {
+        if (business.dateStart >= business.dateFinish) {
+            throw IncorrectDateOrTime()
+        } else {
+            businessesRepository.updateBusiness(business)
+        }
+    }
 
     fun deleteBusiness(id: Long) = businessesRepository.deleteBusiness(id)
 
@@ -50,21 +54,29 @@ class BusinessViewModel : BaseViewModel() {
         return Pair(Pair(startDate, startTime), Pair(finishDate, finishTime))
     }
 
-    fun getDate(millis: Long): String {
-        simpleDateFormat.timeZone = TimeZone.getDefault()
-        simpleTimeFormat.timeZone = TimeZone.getDefault()
+    fun getDate(millis: Long, default: Boolean = false): String {
+        if (default) {
+            simpleDateFormat.timeZone = TimeZone.getDefault()
+            simpleTimeFormat.timeZone = TimeZone.getDefault()
+        }
         val result = simpleDateFormat.format(millis)
-        simpleDateFormat.timeZone = TimeZone.getTimeZone("GMT")
-        simpleTimeFormat.timeZone = TimeZone.getTimeZone("GMT")
+        if (default) {
+            simpleDateFormat.timeZone = TimeZone.getTimeZone("GMT")
+            simpleTimeFormat.timeZone = TimeZone.getTimeZone("GMT")
+        }
         return result
     }
 
-    fun getTime(millis: Long): String {
-        simpleDateFormat.timeZone = TimeZone.getDefault()
-        simpleTimeFormat.timeZone = TimeZone.getDefault()
+    fun getTime(millis: Long, default: Boolean = false): String {
+        if (default) {
+            simpleDateFormat.timeZone = TimeZone.getDefault()
+            simpleTimeFormat.timeZone = TimeZone.getDefault()
+        }
         val result = simpleTimeFormat.format(millis)
-        simpleDateFormat.timeZone = TimeZone.getTimeZone("GMT")
-        simpleTimeFormat.timeZone = TimeZone.getTimeZone("GMT")
+        if (default) {
+            simpleDateFormat.timeZone = TimeZone.getTimeZone("GMT")
+            simpleTimeFormat.timeZone = TimeZone.getTimeZone("GMT")
+        }
         return result
     }
 

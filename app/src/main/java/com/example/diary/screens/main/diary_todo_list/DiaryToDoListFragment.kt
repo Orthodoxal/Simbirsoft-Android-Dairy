@@ -5,8 +5,8 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.diary.R
-import com.example.diary.databinding.FragmentBusinessBinding
 import com.example.diary.databinding.FragmentDiaryTodoListBinding
+import com.example.diary.model.businesses.entities.Business
 import com.example.diary.screens.base.BaseFragment
 
 class DiaryToDoListFragment : BaseFragment(R.layout.fragment_diary_todo_list) {
@@ -20,13 +20,34 @@ class DiaryToDoListFragment : BaseFragment(R.layout.fragment_diary_todo_list) {
 
         //viewModel.deleteAllBusinesses()
 
-        val businessesList = viewModel.getAllBusinesses()
-        val adapter = context?.let { BusinessesAdapter(it, businessesList) }
-        binding.todoListView.adapter = adapter
+        with(binding) {
+            val businessesList = viewModel.getAllBusinesses()
+            if (businessesList.isEmpty()) {
+                emptyTextView.visibility = View.VISIBLE
+            } else {
+                val onClickAction = { business: Business ->
+                    val direction =
+                        DiaryToDoListFragmentDirections.actionDiaryToDoListFragmentToBusinessFragment(
+                            id = business.id,
+                            dateStart = business.dateStart,
+                            dateFinish = business.dateFinish,
+                            name = business.name,
+                            description = business.description,
+                        )
+                    findNavController().navigate(direction)
+                }
+                val adapter = context?.let { BusinessesAdapter(it, businessesList, onClickAction) }
+                todoListView.adapter = adapter
+            }
 
-        binding.buttonOpen.setOnClickListener {
-            val direction = DiaryToDoListFragmentDirections.actionDiaryToDoListFragmentToBusinessFragment()
-            findNavController().navigate(direction)
+            buttonOpen.setOnClickListener {
+                val direction =
+                    DiaryToDoListFragmentDirections.actionDiaryToDoListFragmentToBusinessFragment(
+                        null,
+                        null
+                    )
+                findNavController().navigate(direction)
+            }
         }
     }
 

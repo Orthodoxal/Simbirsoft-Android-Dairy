@@ -8,4 +8,8 @@
     <string name="delete_button_text">Удалить</string>
     <string name="save_button_text">Сохранить</string>
     <string name="change_button_text">Изменить</string>
+
+    <!-- Toasts -->
+    <string name="save_toast">Дело успешно сохранено</string>
+    <string name="incorrect_time_toast">Указано некорректное время</string>
 </resources>

@@ -1,5 +1,7 @@
 package com.example.diary.screens.main.business
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
@@ -8,18 +10,12 @@ import com.example.diary.R
 import com.example.diary.databinding.FragmentBusinessBinding
 import com.example.diary.model.businesses.entities.BusinessCreate
 import com.example.diary.screens.base.BaseFragment
-import java.text.SimpleDateFormat
 import java.util.*
 
 class BusinessFragment : BaseFragment(R.layout.fragment_business) {
 
     override val viewModel by viewModels<BusinessViewModel>()
     private lateinit var binding: FragmentBusinessBinding
-
-    private val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-        .apply { timeZone = TimeZone.getTimeZone("GMT") }
-    private val simpleTimeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-        .apply { timeZone = TimeZone.getTimeZone("GMT") }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -34,28 +30,37 @@ class BusinessFragment : BaseFragment(R.layout.fragment_business) {
         with(binding) {
 
             // only create
-            simpleDateFormat.timeZone = TimeZone.getDefault()
-            simpleTimeFormat.timeZone = TimeZone.getDefault()
-            val currentDateTime = System.currentTimeMillis()
-            val currentDateTimeNextHour = currentDateTime + HOUR
-            dateStartTextView.text = simpleDateFormat.format(currentDateTime)
-            timeStartTextView.text = simpleTimeFormat.format(currentDateTime)
-            dateFinishTextView.text = simpleDateFormat.format(currentDateTimeNextHour)
-            timeFinishTextView.text = simpleTimeFormat.format(currentDateTimeNextHour)
-            simpleDateFormat.timeZone = TimeZone.getTimeZone("GMT")
-            simpleTimeFormat.timeZone = TimeZone.getTimeZone("GMT")
+            val times = viewModel.getDefaultTimes()
+            dateStartTextView.text = times.first.first
+            timeStartTextView.text = times.first.second
+            dateFinishTextView.text = times.second.first
+            timeFinishTextView.text = times.second.second
+
+            initDateTimeListeners()
 
             buttonSave.setOnClickListener {
-                val start = getTimes(dateStartTextView.text.toString(), timeStartTextView.text.toString())
-                val finish = getTimes(dateFinishTextView.text.toString(), timeFinishTextView.text.toString())
-                viewModel.createBusiness(
-                    BusinessCreate(
-                        start,
-                        finish,
-                        businessNameTextEdit.text.toString(),
-                        businessDescriptionTextEdit.text.toString()
+                try {
+                    val start = viewModel.getTimes(
+                        dateStartTextView.text.toString(),
+                        timeStartTextView.text.toString()
                     )
-                )
+                    val finish = viewModel.getTimes(
+                        dateFinishTextView.text.toString(),
+                        timeFinishTextView.text.toString()
+                    )
+                    viewModel.createBusiness(
+                        BusinessCreate(
+                            start,
+                            finish,
+                            businessNameTextEdit.text.toString(),
+                            businessDescriptionTextEdit.text.toString()
+                        )
+                    )
+                    toast(resources.getString(R.string.save_toast))
+                    findNavController().popBackStack()
+                } catch (e: Exception) {
+                    e.message?.let { message -> toast(message) }
+                }
             }
         }
 
@@ -74,14 +79,67 @@ class BusinessFragment : BaseFragment(R.layout.fragment_business) {
         }
     }
 
-    private fun getTimes(date: String, time: String): Long {
-        val dateParse = simpleDateFormat.parse(date)
-        val timeParse = simpleTimeFormat.parse(time)
-        return if (dateParse != null && timeParse != null) dateParse.time + timeParse.time
-        else throw Exception()
-    }
+    private fun initDateTimeListeners() {
+        with(binding) {
+            val cal = Calendar.getInstance()
 
-    companion object {
-        const val HOUR: Long = 3600 * 1000
+            dateStartTextView.setOnClickListener {
+                context?.let { context ->
+                    DatePickerDialog(
+                        context,
+                        { _, year, monthOfYear, dayOfMonth ->
+                            // action
+                            cal.set(Calendar.YEAR, year)
+                            cal.set(Calendar.MONTH, monthOfYear)
+                            cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                            dateStartTextView.text = viewModel.getDate(cal.timeInMillis)
+                        },
+                        cal.get(Calendar.YEAR),
+                        cal.get(Calendar.MONTH),
+                        cal.get(Calendar.DAY_OF_MONTH)
+                    ).show()
+                }
+            }
+
+            dateFinishTextView.setOnClickListener {
+                context?.let { context ->
+                    DatePickerDialog(
+                        context,
+                        { _, year, monthOfYear, dayOfMonth ->
+                            // action
+                            cal.set(Calendar.YEAR, year)
+                            cal.set(Calendar.MONTH, monthOfYear)
+                            cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                            dateFinishTextView.text = viewModel.getDate(cal.timeInMillis)
+                        },
+                        cal.get(Calendar.YEAR),
+                        cal.get(Calendar.MONTH),
+                        cal.get(Calendar.DAY_OF_MONTH)
+                    ).show()
+                }
+            }
+
+            timeStartTextView.setOnClickListener {
+                TimePickerDialog(
+                    context,
+                    { _, hour, minute ->
+                        cal.set(Calendar.HOUR_OF_DAY, hour)
+                        cal.set(Calendar.MINUTE, minute)
+                        timeStartTextView.text = viewModel.getTime(cal.timeInMillis)
+                    }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true
+                ).show()
+            }
+
+            timeFinishTextView.setOnClickListener {
+                TimePickerDialog(
+                    context,
+                    { _, hour, minute ->
+                        cal.set(Calendar.HOUR_OF_DAY, hour)
+                        cal.set(Calendar.MINUTE, minute)
+                        timeFinishTextView.text = viewModel.getTime(cal.timeInMillis)
+                    }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true
+                ).show()
+            }
+        }
     }
 }

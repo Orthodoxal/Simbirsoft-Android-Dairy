@@ -1,6 +1,7 @@
 package com.example.diary.app
 
 import android.content.Context
+import android.widget.Toast
 import androidx.room.Room
 import com.example.diary.model.businesses.IBusinessesRepository
 import com.example.diary.model.businesses.room.RoomBusinessesRepository
@@ -23,6 +24,10 @@ object Singletons {
     val businessesRepository: IBusinessesRepository by lazy {
         RoomBusinessesRepository(database.getBusinessesDao())
     }
+
+    // --- uiActions
+
+    fun getString(id: Int) = applicationContext.resources.getString(id)
 
     fun init(context: Context) {
         applicationContext = context

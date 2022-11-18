@@ -4,15 +4,18 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.diary.R
+import com.example.diary.app.RequiredFieldIsEmptyException
 import com.example.diary.databinding.FragmentBusinessBinding
 import com.example.diary.model.businesses.entities.Business
 import com.example.diary.model.businesses.entities.BusinessCreate
 import com.example.diary.screens.base.BaseFragment
 import java.util.*
+
 
 class BusinessFragment : BaseFragment(R.layout.fragment_business) {
 
@@ -27,17 +30,19 @@ class BusinessFragment : BaseFragment(R.layout.fragment_business) {
         with(binding) {
             if (args.id == -1L) {
                 // create new
-                buttonChange.visibility = View.INVISIBLE
-                buttonDelete.visibility = View.INVISIBLE
+                changeButton.visibility = View.INVISIBLE
+                deleteButton.visibility = View.INVISIBLE
 
-                val times = viewModel.getDefaultTimes()
+                val times = viewModel.getDefaultTimes(args.dateStart + BusinessViewModel.HOUR)
                 dateStartTextView.text = times.first.first
                 timeStartTextView.text = times.first.second
                 dateFinishTextView.text = times.second.first
                 timeFinishTextView.text = times.second.second
 
-                buttonSave.setOnClickListener {
+                saveButton.setOnClickListener {
                     try {
+                        if (businessNameTextEdit.text.toString() == "")
+                            throw RequiredFieldIsEmptyException(resources.getString(R.string.business_name))
                         val start = viewModel.getTimes(
                             dateStartTextView.text.toString(),
                             timeStartTextView.text.toString()
@@ -55,14 +60,27 @@ class BusinessFragment : BaseFragment(R.layout.fragment_business) {
                             )
                         )
                         toast(resources.getString(R.string.save_toast))
+                        sendResultBack(start)
                         findNavController().popBackStack()
                     } catch (e: Exception) {
                         e.message?.let { message -> toast(message) }
                     }
                 }
+                val callback: OnBackPressedCallback =
+                    object : OnBackPressedCallback(true) {
+                        override fun handleOnBackPressed() {
+                            val start = viewModel.getTimes(
+                                dateStartTextView.text.toString(),
+                                timeStartTextView.text.toString()
+                            )
+                            sendResultBack(start - BusinessViewModel.HOUR)
+                            findNavController().popBackStack()
+                        }
+                    }
+                requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
             } else {
                 // update or delete
-                buttonSave.visibility = View.INVISIBLE
+                saveButton.visibility = View.INVISIBLE
                 businessNameTextEdit.setText(args.name)
                 businessDescriptionTextEdit.setText(args.description)
                 dateStartTextView.text = viewModel.getDate(args.dateStart)
@@ -70,8 +88,10 @@ class BusinessFragment : BaseFragment(R.layout.fragment_business) {
                 dateFinishTextView.text = viewModel.getDate(args.dateFinish)
                 timeFinishTextView.text = viewModel.getTime(args.dateFinish)
 
-                buttonChange.setOnClickListener {
+                changeButton.setOnClickListener {
                     try {
+                        if (businessNameTextEdit.text.toString() == "")
+                            throw RequiredFieldIsEmptyException(resources.getString(R.string.business_name))
                         val start = viewModel.getTimes(
                             dateStartTextView.text.toString(),
                             timeStartTextView.text.toString()
@@ -90,25 +110,43 @@ class BusinessFragment : BaseFragment(R.layout.fragment_business) {
                             )
                         )
                         toast(resources.getString(R.string.save_toast))
+                        sendResultBack(start)
                         findNavController().popBackStack()
                     } catch (e: Exception) {
                         e.message?.let { message -> toast(message) }
                     }
                 }
 
-                buttonDelete.setOnClickListener {
+                deleteButton.setOnClickListener {
                     viewModel.deleteBusiness(args.id)
+                    val start = viewModel.getTimes(
+                        dateStartTextView.text.toString(),
+                        timeStartTextView.text.toString()
+                    )
                     toast(resources.getString(R.string.delete_toast, args.name))
+                    sendResultBack(start)
                     findNavController().popBackStack()
                 }
+
+                val callback: OnBackPressedCallback =
+                    object : OnBackPressedCallback(true) {
+                        override fun handleOnBackPressed() {
+                            val start = viewModel.getTimes(
+                                dateStartTextView.text.toString(),
+                                timeStartTextView.text.toString()
+                            )
+                            sendResultBack(start)
+                            findNavController().popBackStack()
+                        }
+                    }
+                requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
             }
             initDateTimeListeners()
-
-            buttonBack.setOnClickListener {
-                findNavController().popBackStack()
-            }
         }
     }
+
+    private fun sendResultBack(millis: Long) =
+        findNavController().previousBackStackEntry?.savedStateHandle?.set(ACTUAL_DATE, millis)
 
     private fun initDateTimeListeners() {
         with(binding) {
@@ -125,6 +163,13 @@ class BusinessFragment : BaseFragment(R.layout.fragment_business) {
                             cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
                             dateStartTextView.text =
                                 viewModel.getDate(cal.timeInMillis, default = true)
+                            if (cal.timeInMillis >= viewModel.getTimes(
+                                    dateFinishTextView.text.toString(),
+                                    "00:00"
+                                )
+                            ) {
+                                dateFinishTextView.text = dateStartTextView.text
+                            }
                         },
                         cal.get(Calendar.YEAR),
                         cal.get(Calendar.MONTH),
@@ -175,5 +220,9 @@ class BusinessFragment : BaseFragment(R.layout.fragment_business) {
                 ).show()
             }
         }
+    }
+
+    companion object {
+        const val ACTUAL_DATE = "ACTUAL_DATE"
     }
 }

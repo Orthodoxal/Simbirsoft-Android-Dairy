@@ -8,7 +8,8 @@
     <string name="delete_button_text">Удалить</string>
     <string name="save_button_text">Сохранить</string>
     <string name="change_button_text">Изменить</string>
-    <string name="empty_todo_list">У вас нет дел на сегодня</string>
+    <string name="add_button_text">Добавить</string>
+    <string name="empty_todo_list">У вас нет запланированных дел на этот день</string>
     <string name="today">Сегодня</string>
     <string name="yesterday">Вчера</string>
     <string name="tomorrow">Завтра</string>
@@ -16,5 +17,9 @@
     <!-- Toasts -->
     <string name="save_toast">Дело успешно сохранено</string>
     <string name="delete_toast">Дело "%s" удалено</string>
-    <string name="incorrect_time_toast">Указано некорректное время</string>
+
+    <!-- Exceptions -->
+    <string name="incorrect_time_exception">Указано некорректное время</string>
+    <string name="empty_field_exception">%s необходимо к заполнению</string>
+
 </resources>

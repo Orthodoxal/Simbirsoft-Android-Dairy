@@ -35,6 +35,9 @@ object Singletons {
 
     fun getString(id: Int) = applicationContext.resources.getString(id)
 
+    fun getString(id: Int, vararg formatArgs: Any) =
+        applicationContext.resources.getString(id, *formatArgs)
+
     fun init(context: Context) {
         applicationContext = context
     }

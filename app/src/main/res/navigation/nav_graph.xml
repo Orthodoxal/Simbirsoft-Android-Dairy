@@ -25,8 +25,7 @@
             android:defaultValue="-1L" />
         <argument
             android:name="dateStart"
-            app:argType="long"
-            android:defaultValue="-1L" />
+            app:argType="long" />
         <argument
             android:name="dateFinish"
             app:argType="long"

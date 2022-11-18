@@ -1,6 +1,6 @@
 package com.example.diary.screens.main.business
 
-import com.example.diary.app.IncorrectDateOrTime
+import com.example.diary.app.IncorrectDateOrTimeException
 import com.example.diary.app.Singletons
 import com.example.diary.model.businesses.entities.Business
 import com.example.diary.model.businesses.entities.BusinessCreate
@@ -14,7 +14,7 @@ class BusinessViewModel : BaseViewModel(), IDateTimeFormatter by Singletons.date
 
     fun createBusiness(businessCreate: BusinessCreate) {
         if (businessCreate.dateStart >= businessCreate.dateFinish) {
-            throw IncorrectDateOrTime()
+            throw IncorrectDateOrTimeException()
         } else {
             businessesRepository.createBusiness(businessCreate)
         }
@@ -22,7 +22,7 @@ class BusinessViewModel : BaseViewModel(), IDateTimeFormatter by Singletons.date
 
     fun updateBusiness(business: Business) {
         if (business.dateStart >= business.dateFinish) {
-            throw IncorrectDateOrTime()
+            throw IncorrectDateOrTimeException()
         } else {
             businessesRepository.updateBusiness(business)
         }
@@ -31,7 +31,7 @@ class BusinessViewModel : BaseViewModel(), IDateTimeFormatter by Singletons.date
     fun deleteBusiness(id: Long) = businessesRepository.deleteBusiness(id)
 
     companion object {
-        const val HOUR: Long = 3600 * 1000
+        const val HOUR: Long = 3600000
     }
 
 }

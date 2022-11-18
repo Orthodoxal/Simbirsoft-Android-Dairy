@@ -4,16 +4,117 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".screens.main.business.BusinessFragment">
+    tools:context=".screens.main.business.BusinessFragment"
+    android:background="@color/background">
 
-    <Button
-        android:id="@+id/buttonBack"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/businessName"
+        style="@style/MyCustomOutlined"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/businessDescription"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintVertical_bias="0.1">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/businessNameTextEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_large"
+            android:textColor="@color/white"
+            android:hint="@string/business_name" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/businessDescription"
+        style="@style/MyCustomOutlined"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/businessName"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/businessDescriptionTextEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:hint="@string/business_description" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/dateStartTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Открыть новый фрагмент"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="60dp"
+        android:textSize="@dimen/text_large"
+        android:textColor="@color/opal"
+        android:text="@string/business_name"
+        app:layout_constraintStart_toStartOf="@id/businessDescription"
+        app:layout_constraintTop_toBottomOf="@id/businessDescription"/>
+
+    <TextView
+        android:id="@+id/dateFinishTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="@dimen/text_large"
+        android:textColor="@color/opal"
+        android:text="@string/business_name"
+        app:layout_constraintStart_toStartOf="@id/businessDescription"
+        app:layout_constraintTop_toBottomOf="@id/dateStartTextView"/>
+
+    <TextView
+        android:id="@+id/timeStartTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:textSize="@dimen/text_large"
+        android:textColor="@color/opal"
+        android:text="@string/business_name"
+        app:layout_constraintEnd_toEndOf="@id/businessDescription"
+        app:layout_constraintTop_toBottomOf="@id/businessDescription"/>
+
+    <TextView
+        android:id="@+id/timeFinishTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="@dimen/text_large"
+        android:textColor="@color/opal"
+        android:text="@string/business_name"
+        app:layout_constraintEnd_toEndOf="@id/businessDescription"
+        app:layout_constraintTop_toBottomOf="@id/timeStartTextView"/>
+
+    <Button
+        android:id="@+id/deleteButton"
+        style="@style/NegativeButtonStyle"
+        android:text="@string/delete_button_text"
+        android:layout_marginTop="40dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/changeButton"
+        app:layout_constraintTop_toBottomOf="@+id/businessDescription"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.9"/>
+
+    <Button
+        android:id="@+id/changeButton"
+        style="@style/PositiveButtonStyle"
+        android:text="@string/change_button_text"
+        app:layout_constraintStart_toEndOf="@+id/deleteButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/deleteButton"
+        app:layout_constraintTop_toTopOf="@+id/deleteButton" />
+
+    <Button
+        android:id="@+id/saveButton"
+        style="@style/PositiveButtonStyle"
+        android:text="@string/save_button_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/deleteButton"
+        app:layout_constraintTop_toTopOf="@+id/deleteButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,6 +9,9 @@
     <string name="save_button_text">Сохранить</string>
     <string name="change_button_text">Изменить</string>
     <string name="empty_todo_list">У вас нет дел на сегодня</string>
+    <string name="today">Сегодня</string>
+    <string name="yesterday">Вчера</string>
+    <string name="tomorrow">Завтра</string>
 
     <!-- Toasts -->
     <string name="save_toast">Дело успешно сохранено</string>

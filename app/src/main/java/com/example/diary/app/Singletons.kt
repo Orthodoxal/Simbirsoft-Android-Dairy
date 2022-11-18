@@ -5,6 +5,8 @@ import android.widget.Toast
 import androidx.room.Room
 import com.example.diary.model.businesses.IBusinessesRepository
 import com.example.diary.model.businesses.room.RoomBusinessesRepository
+import com.example.diary.model.date_time.DateTimeFormatter
+import com.example.diary.model.date_time.IDateTimeFormatter
 import com.example.diary.model.room.AppDatabase
 
 object Singletons {
@@ -23,6 +25,10 @@ object Singletons {
 
     val businessesRepository: IBusinessesRepository by lazy {
         RoomBusinessesRepository(database.getBusinessesDao())
+    }
+
+    val dateTimeFormatter: IDateTimeFormatter by lazy {
+        DateTimeFormatter()
     }
 
     // --- uiActions

@@ -7,10 +7,14 @@ interface IBusinessesRepository {
 
     fun getAllBusinesses(): List<Business>
 
+    fun filterBusinessesByTime(start: Long, end: Long): List<Business>
+
     fun createBusiness(businessCreate: BusinessCreate)
 
     fun updateBusiness(business: Business)
 
     fun deleteBusiness(id: Long)
+
+    fun deleteAll()
 
 }

@@ -20,4 +20,9 @@ class RoomBusinessesRepository(
 
     override fun deleteBusiness(id: Long) = businessesDao.deleteBusiness(id)
 
+    override fun deleteAll() = businessesDao.deleteAll()
+
+    override fun filterBusinessesByTime(start: Long, end: Long) =
+        businessesDao.filterBusinessesByTime(start, end).map { it.toBusiness() }
+
 }

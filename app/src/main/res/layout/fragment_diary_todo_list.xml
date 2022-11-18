@@ -7,19 +7,55 @@
     tools:context=".screens.main.diary_todo_list.DiaryToDoListFragment"
     android:background="@color/background">
 
-    <Button
-        android:id="@+id/buttonOpen"
+    <TextView
+        android:id="@+id/dateTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Открыть новый фрагмент"
+        android:textSize="@dimen/text_xlarge"
+        android:textColor="@color/white"
+        android:text="@string/today"
+        android:layout_marginTop="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ListView
+        android:id="@+id/todo_ListView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="20dp"
+        android:divider="@null"
+        android:dividerHeight="8dp"
+        android:scrollbarStyle="insideInset"
+        android:scrollbarThumbVertical="@color/orange"
+        app:layout_constraintTop_toBottomOf="@id/dateTextView"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/emptyTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_large"
+        android:textColor="@color/opal"
+        android:visibility="invisible"
+        android:layout_marginHorizontal="20dp"
+        android:text="@string/empty_todo_list"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <Button
+        android:id="@+id/addButton"
+        style="@style/PositiveButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_button_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <include layout="@layout/bottom_menu"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        android:layout_marginBottom="20dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

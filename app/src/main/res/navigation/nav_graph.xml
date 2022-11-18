@@ -18,5 +18,25 @@
         android:id="@+id/businessFragment"
         android:name="com.example.diary.screens.main.business.BusinessFragment"
         android:label="fragment_business"
-        tools:layout="@layout/fragment_business" />
+        tools:layout="@layout/fragment_business" >
+        <argument
+            android:name="id"
+            app:argType="long"
+            android:defaultValue="-1L" />
+        <argument
+            android:name="dateStart"
+            app:argType="long" />
+        <argument
+            android:name="dateFinish"
+            app:argType="long"
+            android:defaultValue="-1L" />
+        <argument
+            android:name="name"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="description"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 </navigation>

@@ -102,6 +102,8 @@ class DiaryToDoListFragment : BaseFragment(R.layout.fragment_diary_todo_list) {
                     setActualInfo(actualMillis)
                 }
             })
+
+            observeBusinessesByDay()
         }
     }
 
@@ -120,27 +122,33 @@ class DiaryToDoListFragment : BaseFragment(R.layout.fragment_diary_todo_list) {
                 else -> viewModel.getDate(actualMillis)
             }
 
-            val businessesList = viewModel.getFilteredBusinessesByDay(actualMillis)
+            viewModel.getFilteredBusinessesByDay(actualMillis)
+        }
+    }
 
-            val adapter: BusinessesAdapter? = if (businessesList.isEmpty()) {
-                emptyTextView.visibility = View.VISIBLE
-                null
-            } else {
-                emptyTextView.visibility = View.INVISIBLE
-                val onClickAction = { business: Business ->
-                    val direction =
-                        DiaryToDoListFragmentDirections.actionDiaryToDoListFragmentToBusinessFragment(
-                            id = business.id,
-                            dateStart = business.dateStart,
-                            dateFinish = business.dateFinish,
-                            name = business.name,
-                            description = business.description,
-                        )
-                    findNavController().navigate(direction)
+    private fun observeBusinessesByDay() {
+        viewModel.businessesByDate.observe(viewLifecycleOwner) { businessesList ->
+            with(binding) {
+                val adapter: BusinessesAdapter? = if (businessesList.isEmpty()) {
+                    emptyTextView.visibility = View.VISIBLE
+                    null
+                } else {
+                    emptyTextView.visibility = View.INVISIBLE
+                    val onClickAction = { business: Business ->
+                        val direction =
+                            DiaryToDoListFragmentDirections.actionDiaryToDoListFragmentToBusinessFragment(
+                                id = business.id,
+                                dateStart = business.dateStart,
+                                dateFinish = business.dateFinish,
+                                name = business.name,
+                                description = business.description,
+                            )
+                        findNavController().navigate(direction)
+                    }
+                    context?.let { BusinessesAdapter(it, businessesList, onClickAction) }
                 }
-                context?.let { BusinessesAdapter(it, businessesList, onClickAction) }
+                todoListView.adapter = adapter
             }
-            todoListView.adapter = adapter
         }
     }
 

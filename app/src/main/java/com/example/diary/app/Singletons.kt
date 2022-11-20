@@ -17,7 +17,6 @@ object Singletons {
 
     private val database: AppDatabase by lazy<AppDatabase> {
         Room.databaseBuilder(applicationContext, AppDatabase::class.java, "database.db")
-            .allowMainThreadQueries()
             .build()
     }
 

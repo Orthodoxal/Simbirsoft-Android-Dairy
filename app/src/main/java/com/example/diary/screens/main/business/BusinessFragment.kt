@@ -1,5 +1,6 @@
 package com.example.diary.screens.main.business
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
@@ -118,14 +119,24 @@ class BusinessFragment : BaseFragment(R.layout.fragment_business) {
                 }
 
                 deleteButton.setOnClickListener {
-                    viewModel.deleteBusiness(args.id)
-                    val start = viewModel.getTimes(
-                        dateStartTextView.text.toString(),
-                        timeStartTextView.text.toString()
-                    )
-                    toast(resources.getString(R.string.delete_toast, args.name))
-                    sendResultBack(start)
-                    findNavController().popBackStack()
+                    AlertDialog.Builder(this@BusinessFragment.context)
+                        .setTitle(R.string.delete_business_alert_dialog_title)
+                        .setMessage(R.string.delete_business_alert_dialog_message)
+                        .setPositiveButton(android.R.string.yes) { _, _ ->
+                            viewModel.deleteBusiness(args.id)
+                            val start = viewModel.getTimes(
+                                dateStartTextView.text.toString(),
+                                timeStartTextView.text.toString()
+                            )
+                            toast(resources.getString(R.string.delete_toast, args.name))
+                            sendResultBack(start)
+                            findNavController().popBackStack()
+                        }
+                        .setNegativeButton(android.R.string.no) { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        .create()
+                        .show()
                 }
 
                 val callback: OnBackPressedCallback =

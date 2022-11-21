@@ -22,4 +22,8 @@
     <string name="incorrect_time_exception">Указано некорректное время</string>
     <string name="empty_field_exception">%s необходимо к заполнению</string>
 
+    <!-- Alert Dialogs -->
+    <string name="delete_business_alert_dialog_title">Вы действительно хотите удалить это дело?</string>
+    <string name="delete_business_alert_dialog_message">После удаления вы не сможете восстановить это дело</string>
+
 </resources>

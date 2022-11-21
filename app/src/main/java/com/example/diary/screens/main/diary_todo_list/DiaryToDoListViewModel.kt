@@ -1,20 +1,36 @@
 package com.example.diary.screens.main.diary_todo_list
 
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.diary.app.Singletons
+import com.example.diary.model.businesses.entities.Business
 import com.example.diary.model.date_time.IDateTimeFormatter
 import com.example.diary.screens.base.BaseViewModel
+import kotlinx.coroutines.launch
 
 class DiaryToDoListViewModel : BaseViewModel(), IDateTimeFormatter by Singletons.dateTimeFormatter {
     private val businessesRepository = Singletons.businessesRepository
+    private val appSettings = Singletons.appSettings
 
-    fun getAllBusinesses() = businessesRepository.getAllBusinesses()
+    private val _businessesByDate = MutableLiveData<List<Business>>()
+    val businessesByDate = _businessesByDate.share()
 
-    fun getFilteredBusinessesByDay(millisStart: Long) =
-        businessesRepository.filterBusinessesByTime(millisStart, millisStart + DAY)
+    //fun getAllBusinesses() = businessesRepository.getAllBusinesses()
 
-    fun deleteAllBusinesses() = businessesRepository.deleteAll()
+    fun getFilteredBusinessesByDay(millisStart: Long) = viewModelScope.launch {
+        businessesRepository.filterBusinessesByTime(millisStart, millisStart + DAY).collect {
+            _businessesByDate.value = it
+        }
+    }
+
+    fun getViewMode() = appSettings.getViewMode()
+
+    fun setViewMode(viewMode: ViewMode) = appSettings.setViewMode(viewMode)
+
+    fun deleteAllBusinesses() = viewModelScope.launch { businessesRepository.deleteAll() }
 
     companion object {
         const val DAY: Long = 86400000
     }
+
 }

@@ -2,19 +2,20 @@ package com.example.diary.model.businesses
 
 import com.example.diary.model.businesses.entities.Business
 import com.example.diary.model.businesses.entities.BusinessCreate
+import kotlinx.coroutines.flow.Flow
 
 interface IBusinessesRepository {
 
-    fun getAllBusinesses(): List<Business>
+    fun getAllBusinesses(): Flow<List<Business>>
 
-    fun filterBusinessesByTime(start: Long, end: Long): List<Business>
+    suspend fun filterBusinessesByTime(start: Long, end: Long): Flow<List<Business>>
 
-    fun createBusiness(businessCreate: BusinessCreate)
+    suspend fun createBusiness(businessCreate: BusinessCreate)
 
-    fun updateBusiness(business: Business)
+    suspend fun updateBusiness(business: Business)
 
-    fun deleteBusiness(id: Long)
+    suspend fun deleteBusiness(id: Long)
 
-    fun deleteAll()
+    suspend fun deleteAll()
 
 }

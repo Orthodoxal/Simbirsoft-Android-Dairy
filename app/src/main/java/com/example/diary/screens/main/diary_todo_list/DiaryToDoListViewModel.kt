@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 
 class DiaryToDoListViewModel : BaseViewModel(), IDateTimeFormatter by Singletons.dateTimeFormatter {
     private val businessesRepository = Singletons.businessesRepository
+    private val appSettings = Singletons.appSettings
 
     private val _businessesByDate = MutableLiveData<List<Business>>()
     val businessesByDate = _businessesByDate.share()
@@ -21,6 +22,10 @@ class DiaryToDoListViewModel : BaseViewModel(), IDateTimeFormatter by Singletons
             _businessesByDate.value = it
         }
     }
+
+    fun getViewMode() = appSettings.getViewMode()
+
+    fun setViewMode(viewMode: ViewMode) = appSettings.setViewMode(viewMode)
 
     fun deleteAllBusinesses() = viewModelScope.launch { businessesRepository.deleteAll() }
 

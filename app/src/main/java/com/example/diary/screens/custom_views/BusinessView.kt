@@ -1,4 +1,4 @@
-package com.example.diary.screens.main.diary_todo_list
+package com.example.diary.screens.custom_views
 
 import android.content.Context
 import android.util.AttributeSet
@@ -18,8 +18,6 @@ class BusinessView @JvmOverloads constructor(
 
     private val dateTimeFormatter: IDateTimeFormatter = Singletons.dateTimeFormatter
     private val binding: BusinessViewBinding
-    private var tryAgainAction: (() -> Unit)? = null
-    private var pendingDescription: String? = null
 
     init {
         val inflater = LayoutInflater.from(context)

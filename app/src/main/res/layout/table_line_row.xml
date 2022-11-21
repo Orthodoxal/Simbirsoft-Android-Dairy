@@ -4,7 +4,6 @@
     android:layout_height="wrap_content"
     android:layout_marginVertical="8dp">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,9 +20,9 @@
 
         <View
             android:id="@+id/line1"
-            android:layout_width="match_parent"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="2dp"
+            android:layout_width="0dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="1dp"
             android:layout_height="1dip"
             android:background="#FF909090"
             app:layout_constraintStart_toEndOf="@id/timeRow"
@@ -31,4 +30,5 @@
             app:layout_constraintBottom_toBottomOf="@id/timeRow"
             app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </TableRow>

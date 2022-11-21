@@ -19,23 +19,10 @@ class BusinessesAdapter(
     private val businessList: List<Business>,
     private val onClickAction: (Business) -> Unit
 ) : ArrayAdapter<Business>(context, R.layout.business_view, businessList) {
-    private val dateTimeFormatter: IDateTimeFormatter = Singletons.dateTimeFormatter
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val view = convertView ?: LayoutInflater.from(context)
-            .inflate(R.layout.business_view, parent, false)
-
-        val name = view.findViewById<TextView>(R.id.name)
-        val description = view.findViewById<TextView>(R.id.time)
-
-        val timeStart = dateTimeFormatter.getTime(businessList[position].dateStart)
-        val timeFinish = dateTimeFormatter.getTime(businessList[position].dateFinish)
-
-        name.text = businessList[position].name
-        description.text = "$timeStart - $timeFinish"
-
-        view.setOnClickListener { onClickAction(businessList[position]) }
-
+        val view = if (convertView == null) BusinessView(context) else convertView as BusinessView
+        view.setParams(businessList[position], onClickAction)
         return view
     }
 }

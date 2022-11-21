@@ -3,7 +3,12 @@ package com.example.diary.screens.main.diary_todo_list
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.ListView
+import android.widget.TableRow
+import android.widget.TextView
+import androidx.core.view.marginTop
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.diary.R
@@ -11,13 +16,17 @@ import com.example.diary.databinding.FragmentDiaryTodoListBinding
 import com.example.diary.model.businesses.entities.Business
 import com.example.diary.screens.base.BaseFragment
 import com.example.diary.screens.main.business.BusinessFragment
+import com.example.diary.screens.main.business.BusinessViewModel
 import com.example.diary.utils.OnSwipeTouchListener
 import java.util.*
+import kotlin.properties.Delegates
 
 class DiaryToDoListFragment : BaseFragment(R.layout.fragment_diary_todo_list) {
 
     override val viewModel by viewModels<DiaryToDoListViewModel>()
     private lateinit var binding: FragmentDiaryTodoListBinding
+    private var actualMillis by Delegates.notNull<Long>()
+    private var viewMode = ViewMode.LIST
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -30,7 +39,7 @@ class DiaryToDoListFragment : BaseFragment(R.layout.fragment_diary_todo_list) {
                 BusinessFragment.ACTUAL_DATE
             )
 
-            var actualMillis =
+            actualMillis =
                 if (millis == null)
                     viewModel.getTimes(
                         viewModel.getDate(
@@ -85,6 +94,21 @@ class DiaryToDoListFragment : BaseFragment(R.layout.fragment_diary_todo_list) {
                         null
                     )
                 findNavController().navigate(direction)
+            }
+
+            modeButton.setOnClickListener {
+                viewMode = when (viewMode) {
+                    ViewMode.LIST -> {
+                        todoListView.visibility = View.GONE
+                        scrollView.visibility = View.VISIBLE
+                        ViewMode.TABLE
+                    }
+                    ViewMode.TABLE -> {
+                        todoListView.visibility = View.VISIBLE
+                        scrollView.visibility = View.GONE
+                        ViewMode.LIST
+                    }
+                }
             }
 
             root.setOnTouchListener(object :
@@ -148,6 +172,96 @@ class DiaryToDoListFragment : BaseFragment(R.layout.fragment_diary_todo_list) {
                     context?.let { BusinessesAdapter(it, businessesList, onClickAction) }
                 }
                 todoListView.adapter = adapter
+
+                todoTable.removeAllViews()
+                val ms = actualMillis
+                for (i in 0 until 24) {
+
+                    val businessesByHour =
+                        businessesList.filter {
+                            it.dateStart in actualMillis + (i * BusinessViewModel.HOUR) until actualMillis + ((i + 1) * BusinessViewModel.HOUR)
+                        }
+
+                    val onClickAction = { business: Business ->
+                        val direction =
+                            DiaryToDoListFragmentDirections.actionDiaryToDoListFragmentToBusinessFragment(
+                                id = business.id,
+                                dateStart = business.dateStart,
+                                dateFinish = business.dateFinish,
+                                name = business.name,
+                                description = business.description,
+                            )
+                        findNavController().navigate(direction)
+                    }
+
+                    for (business in businessesByHour) {
+                        val tableRowView = LayoutInflater.from(context)
+                            .inflate(R.layout.table_row, todoTable, false) as TableRow
+
+                        val view = tableRowView.findViewById<BusinessView>(R.id.businessViewRow)
+
+                        view.setParams(business, onClickAction)
+                        /*view.setName(business.name)
+                        val timeStart = viewModel.getTime(business.dateStart)
+                        val timeFinish = viewModel.getTime(business.dateFinish)
+                        view.setTime("$timeStart - $timeFinish")
+                        view.setOnClickListener { onClickAction(business) }*/
+
+                        /*val view = LayoutInflater.from(context)
+                            .inflate(R.layout.business_view, tableRowView, false)
+
+                        val name = view.findViewById<TextView>(R.id.name)
+                        val time = view.findViewById<TextView>(R.id.time)
+
+                        val timeStart = viewModel.getTime(business.dateStart)
+                        val timeFinish = viewModel.getTime(business.dateFinish)
+                        name.text = business.name
+                        time.text = "$timeStart - $timeFinish"
+
+                        view.setOnClickListener { onClickAction(business) }*/
+                        //tableRowView.addView(view)
+
+                        todoTable.addView(tableRowView)
+                    }
+
+                    /*val listView = tableRowView.findViewById<ListView>(R.id.todoRowListView)
+
+                    val temp = mutableListOf<Business>()
+
+                    for (business in businessesList) {
+                        val start = ms + (i * BusinessViewModel.HOUR)
+                        val end = ms + ((i + 1) * BusinessViewModel.HOUR)
+                        if (business.dateStart in start until end)
+                            temp.add(business)
+                    }
+
+                    val businessesByHour =
+                        businessesList.filter {
+                            it.dateStart in actualMillis + (i * BusinessViewModel.HOUR) until actualMillis + ((i + 1) * BusinessViewModel.HOUR)
+                        }
+                    val onClickAction = { business: Business ->
+                        val direction =
+                            DiaryToDoListFragmentDirections.actionDiaryToDoListFragmentToBusinessFragment(
+                                id = business.id,
+                                dateStart = business.dateStart,
+                                dateFinish = business.dateFinish,
+                                name = business.name,
+                                description = business.description,
+                            )
+                        findNavController().navigate(direction)
+                    }
+                    val adapterByHour =
+                        context?.let { BusinessesAdapter(it, businessesByHour, onClickAction) }
+                    listView.adapter = adapterByHour*/
+                    //todoTable.addView(tableRowView)
+
+                    if (i != 23) {
+                        val tableRowLineView = LayoutInflater.from(context)
+                            .inflate(R.layout.table_line_row, todoTable, false) as TableRow
+                        todoTable.addView(tableRowLineView)
+                    }
+                }
+
             }
         }
     }

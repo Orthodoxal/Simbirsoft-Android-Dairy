@@ -1,5 +1,6 @@
 package com.example.diary.screens.main.business
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
@@ -9,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.diary.R
+import com.example.diary.app.Const.HOUR
 import com.example.diary.app.RequiredFieldIsEmptyException
 import com.example.diary.databinding.FragmentBusinessBinding
 import com.example.diary.model.businesses.entities.Business
@@ -33,7 +35,7 @@ class BusinessFragment : BaseFragment(R.layout.fragment_business) {
                 changeButton.visibility = View.INVISIBLE
                 deleteButton.visibility = View.INVISIBLE
 
-                val times = viewModel.getDefaultTimes(args.dateStart + BusinessViewModel.HOUR)
+                val times = viewModel.getDefaultTimes(args.dateStart + HOUR)
                 dateStartTextView.text = times.first.first
                 timeStartTextView.text = times.first.second
                 dateFinishTextView.text = times.second.first
@@ -66,18 +68,11 @@ class BusinessFragment : BaseFragment(R.layout.fragment_business) {
                         e.message?.let { message -> toast(message) }
                     }
                 }
-                val callback: OnBackPressedCallback =
-                    object : OnBackPressedCallback(true) {
-                        override fun handleOnBackPressed() {
-                            val start = viewModel.getTimes(
-                                dateStartTextView.text.toString(),
-                                timeStartTextView.text.toString()
-                            )
-                            sendResultBack(start - BusinessViewModel.HOUR)
-                            findNavController().popBackStack()
-                        }
-                    }
-                requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+
+                requireActivity().onBackPressedDispatcher.addCallback(
+                    viewLifecycleOwner,
+                    getOnBackPressedCallback()
+                )
             } else {
                 // update or delete
                 saveButton.visibility = View.INVISIBLE
@@ -118,32 +113,47 @@ class BusinessFragment : BaseFragment(R.layout.fragment_business) {
                 }
 
                 deleteButton.setOnClickListener {
-                    viewModel.deleteBusiness(args.id)
-                    val start = viewModel.getTimes(
-                        dateStartTextView.text.toString(),
-                        timeStartTextView.text.toString()
-                    )
-                    toast(resources.getString(R.string.delete_toast, args.name))
-                    sendResultBack(start)
-                    findNavController().popBackStack()
-                }
-
-                val callback: OnBackPressedCallback =
-                    object : OnBackPressedCallback(true) {
-                        override fun handleOnBackPressed() {
+                    AlertDialog.Builder(this@BusinessFragment.context)
+                        .setTitle(R.string.delete_business_alert_dialog_title)
+                        .setMessage(R.string.delete_business_alert_dialog_message)
+                        .setPositiveButton(android.R.string.yes) { _, _ ->
+                            viewModel.deleteBusiness(args.id)
                             val start = viewModel.getTimes(
                                 dateStartTextView.text.toString(),
                                 timeStartTextView.text.toString()
                             )
+                            toast(resources.getString(R.string.delete_toast, args.name))
                             sendResultBack(start)
                             findNavController().popBackStack()
                         }
-                    }
-                requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+                        .setNegativeButton(android.R.string.no) { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        .create()
+                        .show()
+                }
+
+                requireActivity().onBackPressedDispatcher.addCallback(
+                    viewLifecycleOwner,
+                    getOnBackPressedCallback(createdNow = false)
+                )
             }
+
             initDateTimeListeners()
         }
     }
+
+    private fun getOnBackPressedCallback(createdNow: Boolean = true): OnBackPressedCallback =
+        object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val start = viewModel.getTimes(
+                    binding.dateStartTextView.text.toString(),
+                    binding.timeStartTextView.text.toString()
+                )
+                sendResultBack(if (createdNow) start - HOUR else start)
+                findNavController().popBackStack()
+            }
+        }
 
     private fun sendResultBack(millis: Long) =
         findNavController().previousBackStackEntry?.savedStateHandle?.set(ACTUAL_DATE, millis)

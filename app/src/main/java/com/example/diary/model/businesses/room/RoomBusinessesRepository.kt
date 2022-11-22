@@ -4,25 +4,27 @@ import com.example.diary.model.businesses.IBusinessesRepository
 import com.example.diary.model.businesses.entities.Business
 import com.example.diary.model.businesses.entities.BusinessCreate
 import com.example.diary.model.businesses.room.entities.BusinessDBEntity
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class RoomBusinessesRepository(
     private val businessesDao: BusinessesDao
 ) : IBusinessesRepository {
 
-    override fun getAllBusinesses(): List<Business> =
-        businessesDao.getAllBusinesses().map { it.toBusiness() }
+    override fun getAllBusinesses(): Flow<List<Business>> =
+        businessesDao.getAllBusinesses().map { businesses -> businesses.map { it.toBusiness() } }
 
-    override fun createBusiness(businessCreate: BusinessCreate) =
+    override fun filterBusinessesByTime(start: Long, end: Long): Flow<List<Business>> =
+        businessesDao.filterBusinessesByTime(start, end).map { businesses -> businesses.map { it.toBusiness() } }
+
+    override suspend fun createBusiness(businessCreate: BusinessCreate) =
         businessesDao.createBusiness(BusinessDBEntity.fromBusinessCreate(businessCreate))
 
-    override fun updateBusiness(business: Business) =
+    override suspend fun updateBusiness(business: Business) =
         businessesDao.updateBusiness(BusinessDBEntity.fromBusiness(business))
 
-    override fun deleteBusiness(id: Long) = businessesDao.deleteBusiness(id)
+    override suspend fun deleteBusiness(id: Long) = businessesDao.deleteBusiness(id)
 
-    override fun deleteAll() = businessesDao.deleteAll()
-
-    override fun filterBusinessesByTime(start: Long, end: Long) =
-        businessesDao.filterBusinessesByTime(start, end).map { it.toBusiness() }
+    override suspend fun deleteAll() = businessesDao.deleteAll()
 
 }

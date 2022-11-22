@@ -14,6 +14,9 @@ class RoomBusinessesRepository(
     override fun getAllBusinesses(): Flow<List<Business>> =
         businessesDao.getAllBusinesses().map { businesses -> businesses.map { it.toBusiness() } }
 
+    override fun filterBusinessesByTime(start: Long, end: Long): Flow<List<Business>> =
+        businessesDao.filterBusinessesByTime(start, end).map { businesses -> businesses.map { it.toBusiness() } }
+
     override suspend fun createBusiness(businessCreate: BusinessCreate) =
         businessesDao.createBusiness(BusinessDBEntity.fromBusinessCreate(businessCreate))
 
@@ -23,8 +26,5 @@ class RoomBusinessesRepository(
     override suspend fun deleteBusiness(id: Long) = businessesDao.deleteBusiness(id)
 
     override suspend fun deleteAll() = businessesDao.deleteAll()
-
-    override suspend fun filterBusinessesByTime(start: Long, end: Long): Flow<List<Business>> =
-        businessesDao.filterBusinessesByTime(start, end).map { businesses -> businesses.map { it.toBusiness() } }
 
 }

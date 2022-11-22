@@ -10,6 +10,9 @@ import com.example.diary.databinding.BusinessViewBinding
 import com.example.diary.model.businesses.entities.Business
 import com.example.diary.model.date_time.IDateTimeFormatter
 
+/**
+ * Class for custom view for business
+ */
 class BusinessView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -25,6 +28,9 @@ class BusinessView @JvmOverloads constructor(
         binding = BusinessViewBinding.bind(this)
     }
 
+    /**
+     * Params for view set method: name, time, onClickViewAction
+     */
     fun setParams(business: Business, onClickAction: (Business) -> Unit) {
         binding.name.text = business.name
         val timeStart = dateTimeFormatter.getTime(business.dateStart)

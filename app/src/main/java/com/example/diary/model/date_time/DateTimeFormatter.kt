@@ -1,10 +1,15 @@
 package com.example.diary.model.date_time
 
+import com.example.diary.app.Const.HOUR
 import com.example.diary.screens.main.business.BusinessViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * Implementation of [IDateTimeFormatter]
+ */
 class DateTimeFormatter : IDateTimeFormatter {
+
     private val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
         .apply { timeZone = TimeZone.getTimeZone("GMT") }
     private val simpleTimeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
@@ -12,12 +17,10 @@ class DateTimeFormatter : IDateTimeFormatter {
     private val simpleTimeHourFormat = SimpleDateFormat("HH", Locale.getDefault())
         .apply { timeZone = TimeZone.getTimeZone("GMT") }
 
-    /**
-     * @return Pair<Start<Date, Time>, Finish<Date, Time>>
-     */
+
     override fun getDefaultTimes(startTimes: Long): Pair<Pair<String, String>, Pair<String, String>> {
         // get Default times
-        val currentDateTimeNextHour = startTimes + BusinessViewModel.HOUR
+        val currentDateTimeNextHour = startTimes + HOUR
         val startDate = simpleDateFormat.format(startTimes)
         val startTime = simpleTimeFormat.format(startTimes)
         val finishDate = simpleDateFormat.format(currentDateTimeNextHour)

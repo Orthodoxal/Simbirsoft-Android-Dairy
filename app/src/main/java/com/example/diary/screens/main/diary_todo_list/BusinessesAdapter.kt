@@ -8,7 +8,9 @@ import com.example.diary.R
 import com.example.diary.model.businesses.entities.Business
 import com.example.diary.screens.custom_views.BusinessView
 
-
+/**
+ *  [BusinessesAdapter] based on [ArrayAdapter] adapts Businesses to BusinessViews
+ */
 class BusinessesAdapter(
     context: Context,
     private val businessList: List<Business>,

@@ -15,11 +15,13 @@ object Singletons {
 
     private lateinit var applicationContext: Context
 
-    // -- stuffs
+    // --- settings
 
     val appSettings: AppSettings by lazy {
         SharedPreferencesAppSettings(applicationContext)
     }
+
+    // --- database
 
     private val database: AppDatabase by lazy<AppDatabase> {
         Room.databaseBuilder(applicationContext, AppDatabase::class.java, "database.db")

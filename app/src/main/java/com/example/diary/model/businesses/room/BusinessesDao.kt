@@ -6,14 +6,18 @@ import androidx.room.Query
 import androidx.room.Update
 import com.example.diary.model.businesses.room.entities.BusinessDBEntity
 import kotlinx.coroutines.flow.Flow
+import com.example.diary.model.businesses.IBusinessesRepository
 
+/**
+ * @see [IBusinessesRepository]
+ */
 @Dao
 interface BusinessesDao {
 
     @Query("SELECT * FROM businesses")
     fun getAllBusinesses(): Flow<List<BusinessDBEntity>>
 
-    @Query("SELECT * FROM businesses WHERE ((date_start >= :start AND date_start < :end) OR (date_finish >= :start AND date_finish < :end)) ORDER BY date_start")
+    @Query("SELECT * FROM businesses WHERE ((date_start >= :start AND date_start < :end) OR (date_finish > :start AND date_finish < :end)) ORDER BY date_start")
     fun filterBusinessesByTime(start: Long, end: Long): Flow<List<BusinessDBEntity>>
 
     @Update(entity = BusinessDBEntity::class)

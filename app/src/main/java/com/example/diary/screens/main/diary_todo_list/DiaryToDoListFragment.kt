@@ -10,12 +10,13 @@ import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.diary.R
+import com.example.diary.app.Const.DAY
+import com.example.diary.app.Const.HOUR
 import com.example.diary.databinding.FragmentDiaryTodoListBinding
 import com.example.diary.model.businesses.entities.Business
 import com.example.diary.screens.base.BaseFragment
 import com.example.diary.screens.custom_views.BusinessView
 import com.example.diary.screens.main.business.BusinessFragment
-import com.example.diary.screens.main.business.BusinessViewModel
 import com.example.diary.utils.OnSwipeTouchListener
 import java.util.*
 import kotlin.properties.Delegates
@@ -108,14 +109,14 @@ class DiaryToDoListFragment : BaseFragment(R.layout.fragment_diary_todo_list) {
                 OnSwipeTouchListener(this@DiaryToDoListFragment.context) {
                 override fun onSwipeLeft() {
                     super.onSwipeLeft()
-                    actualMillis += DiaryToDoListViewModel.DAY
+                    actualMillis += DAY
                     setActualInfo(actualMillis)
                 }
 
                 override fun onSwipeRight() {
                     super.onSwipeRight()
-                    if (actualMillis - DiaryToDoListViewModel.DAY > 0)
-                        actualMillis -= DiaryToDoListViewModel.DAY
+                    if (actualMillis - DAY > 0)
+                        actualMillis -= DAY
                     setActualInfo(actualMillis)
                 }
             })
@@ -134,8 +135,8 @@ class DiaryToDoListFragment : BaseFragment(R.layout.fragment_diary_todo_list) {
             )
             dateTextView.text = when (actualMillis) {
                 currentMillis -> resources.getString(R.string.today)
-                currentMillis - DiaryToDoListViewModel.DAY -> resources.getString(R.string.yesterday)
-                currentMillis + DiaryToDoListViewModel.DAY -> resources.getString(R.string.tomorrow)
+                currentMillis - DAY -> resources.getString(R.string.yesterday)
+                currentMillis + DAY -> resources.getString(R.string.tomorrow)
                 else -> viewModel.getDate(actualMillis)
             }
 
@@ -161,7 +162,7 @@ class DiaryToDoListFragment : BaseFragment(R.layout.fragment_diary_todo_list) {
                 for (i in 0 until 24) {
                     val businessesByHour =
                         businessesList.filter {
-                            it.dateStart in actualMillis + (i * BusinessViewModel.HOUR) until actualMillis + ((i + 1) * BusinessViewModel.HOUR)
+                            it.dateStart in actualMillis + (i * HOUR) until actualMillis + ((i + 1) * HOUR)
                         }
 
                     for (business in businessesByHour) {

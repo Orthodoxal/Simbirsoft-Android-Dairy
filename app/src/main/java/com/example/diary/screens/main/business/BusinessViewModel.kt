@@ -10,9 +10,8 @@ import com.example.diary.screens.base.BaseViewModel
 import kotlinx.coroutines.launch
 
 class BusinessViewModel : BaseViewModel(), IDateTimeFormatter by Singletons.dateTimeFormatter {
-    private val businessesRepository = Singletons.businessesRepository
 
-    // fun getAllBusinesses() = businessesRepository.getAllBusinesses()
+    private val businessesRepository = Singletons.businessesRepository
 
     fun createBusiness(businessCreate: BusinessCreate) {
         if (businessCreate.dateStart >= businessCreate.dateFinish) {
@@ -36,10 +35,6 @@ class BusinessViewModel : BaseViewModel(), IDateTimeFormatter by Singletons.date
 
     fun deleteBusiness(id: Long) = viewModelScope.launch {
         businessesRepository.deleteBusiness(id)
-    }
-
-    companion object {
-        const val HOUR: Long = 3600000
     }
 
 }

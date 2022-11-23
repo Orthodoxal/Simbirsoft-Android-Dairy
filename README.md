@@ -1,6 +1,11 @@
 # Тестовое задание Simbirsoft Android
 > Приложение представляет собой ежедневник, в котором можно быстро и удобно планировать свое расписание.
 # Скриншоты приложения
+![alt text](app/src/main/assets/main_list.jpg)
+![alt text](app/src/main/assets/main_table.jpg)
+![alt text](app/src/main/assets/main_empty.jpg)
+![alt text](app/src/main/assets/business_edit.jpg)
+![alt text](app/src/main/assets/business_create.jpg)
 # Описание
 ### Описание элементов приложения
 > В приложении присутствуют 2 основных экрана: ***Список дел*** и ***Экран подробного описания дела***
